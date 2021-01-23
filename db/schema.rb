@@ -10,13 +10,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_12_033821) do
+ActiveRecord::Schema.define(version: 2021_01_21_215015) do
+
+  create_table "episodes", force: :cascade do |t|
+    t.string "capture"
+    t.integer "serie_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["serie_id"], name: "index_episodes_on_serie_id"
+  end
 
   create_table "series", force: :cascade do |t|
     t.string "name"
     t.string "cover_page"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.integer "prequel_id"
+    t.integer "sequel_id"
+    t.index ["prequel_id"], name: "index_series_on_prequel_id"
+    t.index ["sequel_id"], name: "index_series_on_sequel_id"
   end
 
+  add_foreign_key "episodes", "series"
+  add_foreign_key "series", "Series", column: "prequel_id"
+  add_foreign_key "series", "Series", column: "sequel_id"
 end
