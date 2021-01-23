@@ -1,14 +1,43 @@
 <p id="notice"><%= notice %></p>
 
-<p>
-  <strong>Name:</strong>
-  <%= @serie.name %>
-</p>
+<div class="card">
+  <div class="card-head">
+    <h3 class="title"> <%= @serie.name %> </h3>
+  </div>
+  
+  <div class="card-body">
+    <img src="<%= @serie.cover_page %>">
+  </div>
+</div>
 
-<p>
-  <strong>Cover page:</strong>
-  <%= @serie.cover_page %>
-</p>
+<h2> Related </h2>
+<div class="card-container">
+  <% unless @serie.prequel.nil? %>
+    <p> Prequel </p>
+    <div class="card">
+      <div class="card-head">
+        <h3 class="title"> <%= @serie.prequel.name %> </h3>
+      </div>
+      
+      <div class="card-body">
+        <img src="<%= @serie.prequel.cover_page %>">
+      </div>
+    </div>
+  <% end %>
+
+  <% unless @serie.sequel.nil? %>
+    <p> Sequel </p>
+    <div class="card">
+      <div class="card-head">
+        <h3 class="title"> <%= @serie.sequel.name %> </h3>
+      </div>
+      
+      <div class="card-body">
+        <img src="<%= @serie.sequel.cover_page %>">
+      </div>
+    </div>
+  <% end %>
+</div>
 
 <%= link_to 'Edit', edit_serie_path(@serie) %> |
 <%= link_to 'Back', series_path %>
