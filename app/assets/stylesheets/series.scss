@@ -2,23 +2,120 @@
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
 
+// palete color
+$success: #ccf6c8;
+$warning: #fafcc2;
+$Danger: #f9c0c0;
+
+// sizings
+$gutter: 1em;
+
+@mixin link-setter($selector) {
+  #{$selector} {
+    text-decoration: none;
+    &:hover {
+      color: black;
+      background-color: transparent;
+    }
+  }
+}
+
+// Setter
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+
+@include link-setter(".card__btn_show");
+
+// resolution sizes
+$resolutions: 768px, 960px, 1024px, 1280px, 1366px, 1400px, 1600px, 1856px, 1920px, 2048px, 2560px, 3840px, 7680px;
+
+// Index page 
+.grid {
+  width: 100%;
+  column-count: 2;
+
+  & > .card {
+    width: 100%;    
+    margin-bottom: 1em;
+  }
+
+  $i: 3;
+  @each $resolution in $resolutions {
+    @media all and (min-width: $resolution) {
+      column-count: $i;
+    }
+    $i: $i + 1;
+  }
+}
+
 .card {
-    width: 200px;
-    margin: 5px;
-    border-radius: 5px;
-    background-color: #f8f1f1;
+  display: inline-flex;
+  height: auto;
+  position: relative;
+  width: 100%;
+  
+  &__btn_show{
+    width: 100%;
+    display: inline-flex;
+    flex-direction: column;
+  }
+  
+  &__cover_page {
+    display: inline-block;
+    width: 100%;
+  }
+  
+  &__title {
+    margin: 0;
+  }
 
-    &-head {
-        .title {
-            text-align: center;
-        }
+  &__buttons {
+    display: flow-root;
+    width: 100%;
+    position: absolute;
+    top: $gutter - .5;
+
+    opacity: 0;
+    transition: .3s;
+  }
+
+  &__btn{
+    background-color: black;
+    border-radius: 50%;
+    height: 50px;
+    width: 50px;
+    
+    text-decoration: none;
+    
+    float: right;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+
+    margin-right: $gutter - .5;
+
+    &-edit {
+      font-size: $gutter + .5;
+      color: $warning;
+      &:hover { color: darken($color: $warning, $amount: 10%);}
     }
 
-    &-body {
-        margin: 0 5px;
-        img {
-            display: inline-block;
-            width: 100%;
-        }
+    &-delete {
+      font-size: $gutter + .9em;
+      color: $Danger;
+      &:hover { color: darken($color: $Danger, $amount: 10%);}
     }
+  }
+
+  &:hover &__buttons {
+    opacity: 1;
+  }
+
+  &, 
+  &__cover_page { 
+    border-radius: 10px; 
+  }
 }

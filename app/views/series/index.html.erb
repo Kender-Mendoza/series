@@ -1,21 +1,22 @@
 <p id="notice"><%= notice %></p>
-
 <h1>Series</h1>
-
-<div style="display:flex; flex-wrap:wrap;" >
-  <% @series.each do |serie| %>
-    <div style="width:200px; border-radius:5px; background:#f5f4f4; margin:5px">
-      <h3 style="text-align:center"><%= serie.name %></h3> 
-      <img src=<%= serie.cover_page %> style="width:100%">
-      <div style="display:flex; justify-content:space-around;">
-        <span><%= link_to 'Show', serie %></span>
-        <span><%= link_to 'Edit', edit_serie_path(serie) %></span>
-        <span><%= link_to 'Destroy', serie, method: :delete, data: { confirm: 'Are you sure?' } %></span>
+<%= link_to 'New Serie', new_serie_path %>
+<div class="grid">
+  <% @series.reverse.each do |serie| %>
+    <div class="card">
+      <a href="<%= serie_path(serie)%>" class="card__btn_show">
+        <img src=<%= serie.cover_page %> class="card__cover_page"/>
+        <h3 class="card__title"><%= serie.name %></h3> 
+      </a>
+      <div class="card__buttons">
+        <%= link_to '', 
+                    serie, 
+                    method: :delete, data: { confirm: 'Are you sure?' }, 
+                    class: "card__btn card__btn-delete fas fa-times" %>
+        <%= link_to '', edit_serie_path(serie), 
+                    class: "card__btn card__btn-edit fas fa-pencil-alt" %>
       </div>
     </div>
   <% end %>
 </div>
-
 <br>
-
-<%= link_to 'New Serie', new_serie_path %>
