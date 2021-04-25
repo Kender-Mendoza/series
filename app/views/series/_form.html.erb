@@ -31,6 +31,30 @@
     <%= form.number_field :sequel_id %>
   </div>
 
+<div>
+  <h2>Episodes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Name</th>
+        <th>Aired</th>
+        <th>Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= form.fields_for :episodes do |detail_form| %>
+        <tr>
+          <td><%= detail_form.number_field :number %></td>
+          <td><%= detail_form.time_field :duration %></td>
+          <td><%= detail_form.text_field :name %></td>
+          <td><%= detail_form.date_field :aired %></td>
+          <td><%= detail_form.check_box :_destroy %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
   <div class="actions">
     <%= form.submit %>
   </div>

@@ -2,10 +2,15 @@ class Serie < ApplicationRecord
     belongs_to :prequel, class_name: "Serie", optional: true, dependent: :destroy
     belongs_to :sequel, class_name: "Serie", optional: true
 
+    has_many :episodes, dependent: :destroy
+    accepts_nested_attributes_for :episodes, allow_destroy: true
+
     validates :prequel, uniqueness: true, allow_nil: true
     validates :sequel, uniqueness: true, allow_nil: true
     after_validation :errors_message_related
     after_validation :update_related, if: -> {errors.empty?}
+
+    
         
     def errors_message_related
         return true if prequel_id.nil? && sequel_id.nil? # si secuela y precuela son iguales

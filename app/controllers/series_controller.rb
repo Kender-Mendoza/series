@@ -69,6 +69,16 @@ class SeriesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def serie_params
-      params.require(:serie).permit(:name, :cover_page, :prequel_id, :sequel_id)
+      params.require(:serie)
+        .permit(:name, 
+                :cover_page, 
+                :prequel_id, 
+                :sequel_id, 
+                episodes_attributes: [:id, 
+                                      :number, 
+                                      :duration, 
+                                      :name, 
+                                      :aired,
+                                      :_destroy])
     end
 end
