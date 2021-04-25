@@ -6,8 +6,12 @@
 #   movies = Movie.create([{ name: 'Star Wars' }, { name: 'Lord of the Rings' }])
 #   Character.create(name: 'Luke', movie: movies.first)
 
-Serie.create(name: "Tate no Yuusha no Nariagari", cover_page: "https://cdn.myanimelist.net/images/anime/1245/111800.jpg")
+serie = Serie.create(name: "Tate no Yuusha no Nariagari", cover_page: "https://cdn.myanimelist.net/images/anime/1245/111800.jpg")
+serie.episodes.create(number: 1, duration:'00:30:00', name: "first episode", aired: "2021-12-01")
+serie.episodes.create(number: 2, duration:'00:30:00', name: "second episode", aired: "2021-12-01")
+serie.episodes.create(number: 3, duration:'00:30:00', name: "threeth episode", aired: "2021-12-01")
 Serie.create(name: "Claymore", cover_page: "https://cdn.myanimelist.net/images/anime/3/21834.jpg")
+     .episodes.create(number: 1, duration:'00:30:00', name: "first episode", aired: "2021-12-2")
 Serie.create(name: "Elfen Lied", cover_page: "https://cdn.myanimelist.net/images/anime/10/6883.jpg")
 Serie.create(name: "Another", cover_page: "https://cdn.myanimelist.net/images/anime/4/75509.jpg")
 Serie.create(name: "Isekai Maou to Shoukan Shoujo no Dorei Majutsu Ω", cover_page: "https://cdn.myanimelist.net/images/anime/1011/113703.jpg")

@@ -39,5 +39,29 @@
   <% end %>
 </div>
 
+<div>
+  <h2>Episodes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Name</th>
+        <th>Aired</th>
+        <th>Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @serie.episodes.each do |episode| %>
+      <tr>
+        <td><%= episode.number %></td>
+        <td><%= episode.name %></td>
+        <td><%= episode.aired %></td>
+        <td><%= episode.duration.to_s(:time) %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
 <%= link_to 'Edit', edit_serie_path(@serie) %> |
 <%= link_to 'Back', series_path %>
