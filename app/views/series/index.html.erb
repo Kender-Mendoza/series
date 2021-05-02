@@ -1,19 +1,25 @@
-<p id="notice"><%= notice %></p>
+<div class="container is-fluid">
+  <%= render 'components/navbar', notice: notice, is_index: true %>
 
-<h1>Series</h1>
-
-<div style="display:flex; flex-wrap:wrap;" >
-  <% @series.each do |serie| %>
-    <div style="width:200px; border-radius:5px; background:#f5f4f4; margin:5px">
-      <h3 style="text-align:center"><%= serie.name %></h3> 
-      <img src=<%= serie.cover_page %> style="width:100%">
-      <div style="display:flex; justify-content:space-around;">
-        <span><%= link_to 'Show', serie %></span>
-        <span><%= link_to 'Edit', edit_serie_path(serie) %></span>
-        <span><%= link_to 'Destroy', serie, method: :delete, data: { confirm: 'Are you sure?' } %></span>
+  <div class="columns is-multiline">
+    <% @series.each do |serie| %>
+      <div class="column is-one-fifth">
+        <div class="card">
+          <header class="card-header">
+            <p class="card-header-title"><%= serie.name %></p>
+          </header>
+          <div class="card-image">
+            <img src=<%= serie.cover_page %> style="width: 100%; height: 350px;">
+          </div>
+          <footer class="card-footer">
+            <span class="card-footer-item"><%= link_to 'Show', serie %></span>
+            <span class="card-footer-item"><%= link_to 'Edit', edit_serie_path(serie) %></span>
+            <span class="card-footer-item"><%= link_to 'Destroy', serie, method: :delete, data: { confirm: 'Are you sure?' } %></span>
+          </footer>
+        </div>
       </div>
-    </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>
 
 <br>
