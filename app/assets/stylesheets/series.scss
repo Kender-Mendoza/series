@@ -1,0 +1,24 @@
+// Place all the styles related to the Series controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: https://sass-lang.com/
+
+.card {
+    width: 200px;
+    margin: 5px;
+    border-radius: 5px;
+    background-color: #f8f1f1;
+
+    &-head {
+        .title {
+            text-align: center;
+        }
+    }
+
+    &-body {
+        margin: 0 5px;
+        img {
+            display: inline-block;
+            width: 100%;
+        }
+    }
+}
