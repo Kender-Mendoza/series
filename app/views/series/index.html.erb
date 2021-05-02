@@ -1,0 +1,21 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Series</h1>
+
+<div style="display:flex; flex-wrap:wrap;" >
+  <% @series.each do |serie| %>
+    <div style="width:200px; border-radius:5px; background:#f5f4f4; margin:5px">
+      <h3 style="text-align:center"><%= serie.name %></h3> 
+      <img src=<%= serie.cover_page %> style="width:100%">
+      <div style="display:flex; justify-content:space-around;">
+        <span><%= link_to 'Show', serie %></span>
+        <span><%= link_to 'Edit', edit_serie_path(serie) %></span>
+        <span><%= link_to 'Destroy', serie, method: :delete, data: { confirm: 'Are you sure?' } %></span>
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<br>
+
+<%= link_to 'New Serie', new_serie_path %>

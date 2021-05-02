@@ -1,0 +1,67 @@
+<p id="notice"><%= notice %></p>
+
+<div class="card">
+  <div class="card-head">
+    <h3 class="title"> <%= @serie.name %> </h3>
+  </div>
+  
+  <div class="card-body">
+    <img src="<%= @serie.cover_page %>">
+  </div>
+</div>
+
+<h2> Related </h2>
+<div class="card-container">
+  <% unless @serie.prequel.nil? %>
+    <p> Prequel </p>
+    <div class="card">
+      <div class="card-head">
+        <h3 class="title"> <%= @serie.prequel.name %> </h3>
+      </div>
+      
+      <div class="card-body">
+        <img src="<%= @serie.prequel.cover_page %>">
+      </div>
+    </div>
+  <% end %>
+
+  <% unless @serie.sequel.nil? %>
+    <p> Sequel </p>
+    <div class="card">
+      <div class="card-head">
+        <h3 class="title"> <%= @serie.sequel.name %> </h3>
+      </div>
+      
+      <div class="card-body">
+        <img src="<%= @serie.sequel.cover_page %>">
+      </div>
+    </div>
+  <% end %>
+</div>
+
+<div>
+  <h2>Episodes</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Name</th>
+        <th>Aired</th>
+        <th>Duration</th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @serie.episodes.each do |episode| %>
+      <tr>
+        <td><%= episode.number %></td>
+        <td><%= episode.name %></td>
+        <td><%= episode.aired %></td>
+        <td><%= episode.duration.to_s(:time) %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>
+
+<%= link_to 'Edit', edit_serie_path(@serie) %> |
+<%= link_to 'Back', series_path %>
