@@ -11,6 +11,7 @@ class Serie < ApplicationRecord
 
   validates :prequel, uniqueness: true, allow_nil: true
   validates :sequel, uniqueness: true, allow_nil: true
+
   after_validation :link_prequel, if: -> { self.prequel_id.present? && self.prequel_id_changed? }
   after_validation :link_sequel, if: -> { self.sequel_id.present? && self.sequel_id_changed? }
   after_validation :unlink_prequel, if: -> { self.prequel_id.nil? && self.prequel_id_changed? }
@@ -49,6 +50,22 @@ class Serie < ApplicationRecord
     serie_sequel = Serie.find_by_id(self.sequel_id_was)
     serie_sequel.prequel = nil
     serie_sequel.save(validate: false)
+
+  def Serie.filter_index(letter, type, state)
+    query = ""
+    query = "name like '#{letter}%'" unless letter == "0"
+
+    unless type == "0"
+      query += " AND " unless query == "" 
+      query += "serie_type = '#{type}'"
+    end
+
+    unless state == "0"
+      query += " AND " unless query == "" 
+      query += "state = '#{state}'"
+    end
+
+    Serie.where(query)
   end
 
 end
