@@ -61,6 +61,13 @@ class SeriesController < ApplicationController
     end
   end
 
+  def filter_series
+    series = Serie.filter_index(params[:selectWithLetter],
+                                params[:selectWithType],
+                                params[:selectWithState]) 
+    render(json: series)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_serie
@@ -70,15 +77,7 @@ class SeriesController < ApplicationController
     # Only allow a list of trusted parameters through.
     def serie_params
       params.require(:serie)
-        .permit(:name, 
-                :cover_page, 
-                :prequel_id, 
-                :sequel_id, 
-                episodes_attributes: [:id, 
-                                      :number, 
-                                      :duration, 
-                                      :name, 
-                                      :aired,
-                                      :_destroy])
+        .permit(:selectWithLetter, :selectWithType, :selectWithType, :name, :cover_page, :prequel_id, :sequel_id, 
+                episodes_attributes: [:id, :number, :duration, :name, :aired, :_destroy])
     end
 end

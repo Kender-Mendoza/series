@@ -48,4 +48,21 @@ class Serie < ApplicationRecord
     serie_sequel.prequel = nil
     serie_sequel.save(validate: false)
   end
+
+  def Serie.filter_index(letter, type, state)
+    query = ""
+    query = "name like '#{letter}%'" unless letter == "0"
+
+    unless type == "0"
+      query += " AND " unless query == "" 
+      query += "serie_type = '#{type}'"
+    end
+
+    unless state == "0"
+      query += " AND " unless query == "" 
+      query += "state = '#{state}'"
+    end
+    
+    Serie.where(query)
+  end
 end
