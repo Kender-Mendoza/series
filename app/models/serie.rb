@@ -1,6 +1,8 @@
 class Serie < ApplicationRecord
     belongs_to :prequel, class_name: "Serie", optional: true, dependent: :destroy
     belongs_to :sequel, class_name: "Serie", optional: true
+    belongs_to :serie_type
+    belongs_to :state
 
     has_many :episodes, dependent: :destroy
     accepts_nested_attributes_for :episodes, allow_destroy: true
