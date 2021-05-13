@@ -4,4 +4,5 @@ class State < ApplicationRecord
   FINISHED_AIRING = 3
 
   has_many :series
+  
 end

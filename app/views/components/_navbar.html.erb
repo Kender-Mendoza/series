@@ -1,3 +1,5 @@
+<% is_index ||= false %>
+
 <p id="notice"><%= notice %></p>
 
 <nav class="navbar is-light mb-3" role="navigation" aria-label="main navigation">
@@ -49,28 +51,21 @@
             </select>
           </div>
         </div>
-        
+
         <div class="navbar-item">
           <div class="select is-link">
-            <select id="with-types">
-              <option value="0">With Type</option>
-              <option value="serie">Serie</option>
-              <option value="movie">Movie</option>
-              <option value="ova">Ova</option>
-              <option value="special">Special</option>
-            </select>
-            </div>
+            <%= select "", 
+                       "with-types", 
+                       ApplicationPresenter.get_all_serie_types_for_filter %>
+          </div>
         </div>
 
         <div class="navbar-item">
           <div class="select is-link">
-            <select id="with-states">
-              <option value="0">With State</option>
-              <option value="coming_song">Coming song</option>
-              <option value="currently_airing">Currently Airing</option>
-              <option value="finished_airing">Finished Airing</option>
-            </select>
-            </div>
+            <%= select "", 
+                       "with-states", 
+                       ApplicationPresenter.get_all_serie_states_for_filter %>
+          </div>
         </div>
       </div>
     <% end %>
