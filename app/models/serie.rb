@@ -57,12 +57,12 @@ class Serie < ApplicationRecord
 
     unless type == "0"
       query += " AND " unless query == "" 
-      query += "serie_type = '#{type}'"
+      query += "serie_type_id = '#{type}'"
     end
 
     unless state == "0"
       query += " AND " unless query == "" 
-      query += "state = '#{state}'"
+      query += "state_id = '#{state}'"
     end
 
     Serie.where(query)
