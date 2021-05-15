@@ -1,66 +1,83 @@
-<p id="notice"><%= notice %></p>
+<%= render 'components/navbar', notice: notice %>
 
-<div class="card">
-  <div class="card-head">
-    <h3 class="title"> <%= @serie.name %> </h3>
-  </div>
-
-  <div class="card-body">
-    <img src="<%= @serie.cover_page %>">
-  </div>
-</div>
-
-<h2> Related </h2>
-<div class="card-container">
-  <% unless @serie.prequel.nil? %>
-    <p> Prequel </p>
-    <div class="card">
-      <div class="card-head">
-        <h3 class="title"> <%= @serie.prequel.name %> </h3>
-      </div>
-
-      <div class="card-body">
-        <img src="<%= @serie.prequel.cover_page %>">
+<div class="container">
+  <div class="container is-fluid m-0 p-1 columns">
+    <div class="column is-3">
+      <div class="card">
+        <div class="card-image">
+          <%= image_tag( @serie.cover_page, class: "image", width: "100%") %>
+        </div>
+        <div class="tag is-warning tag--edit">
+          <%= link_to 'Edit', edit_serie_path(@serie), class: "has-text-dark" %>
+        </div>
+        <div class="tag is-danger tag--delete">
+          <%= link_to 'Delete', @serie, method: :delete, data: { confirm: 'Are you sure?' }, class: "has-text-dark" %>
+        </div>
       </div>
     </div>
-  <% end %>
 
-  <% unless @serie.sequel.nil? %>
-    <p> Sequel </p>
-    <div class="card">
-      <div class="card-head">
-        <h3 class="title"> <%= @serie.sequel.name %> </h3>
+    <div class="column is-9">
+      <div class="block">
+        <div class="content">
+          <h1 class="title is-4"> <%= @serie.name %> </h1>
+          <p class="has-text-justified"> <%= @serie.synopsis %> </p>
+        </div>
+      </div>
+      
+      <div class="block">
+        <% if @serie.prequel.present? %>
+          <p><b>Prequel:</b> <%= link_to @serie.prequel.name, @serie.prequel %></p>
+        <% end %>
+        <% if @serie.sequel.present? %>
+          <p><b>Sequel:</b> <%= link_to @serie.sequel.name, @serie.sequel %></p>
+        <% end %>
       </div>
 
-      <div class="card-body">
-        <img src="<%= @serie.sequel.cover_page %>">
+      <div class="block">
+        <table class="table is-striped is-fullwidth">
+          <tr>
+            <th class="pl-0">Number of episodes:</th>
+            <td class="has-text-right pr-0"><%= @serie.quantity_episodes %></td>
+          </tr>
+          <tr>
+            <th class="pl-0">Aired:</th>
+            <td class="has-text-right pr-0"><%= @serie.aired.strftime("%B %Y") %></td>
+          </tr>
+          <tr>
+            <th class="pl-0">Serie type:</th>
+            <td class="has-text-right pr-0"><%= @serie.serie_type.name %></td>
+          </tr>
+          <tr>
+            <th class="pl-0">Aired:</th>
+            <td class="has-text-right pr-0"><%= @serie.state.name %></td>
+          </tr>
+        </table>
+      </div>
+
+      <div class="block">
+        <table class="table is-striped is-fullwidth">
+          <thead>
+            <tr>
+              <th class="pl-0">Numer</th>
+              <th class="pl-0">Name</th>
+              <th class="pl-0">Duration</th>
+              <th class="pl-0">Aired</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @serie.episodes.each do |episode| %>
+              <tr>
+                <td class="pl-0"><%= episode.number.to_i %></td>
+                <td class="pl-0"><%= episode.name %></td>
+                <td class="pl-0"><%= episode.duration.strftime("%k:%M") %></td>
+                <td class="pl-0"><%= episode.aired.strftime("%B %d, %Y") %></td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
       </div>
     </div>
-  <% end %>
-</div>
-
-<div>
-  <h2>Episodes</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Number</th>
-        <th>Name</th>
-        <th>Aired</th>
-        <th>Duration</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @serie.episodes.each do |episode| %>
-      <tr>
-        <td><%= episode.number %></td>
-        <td><%= episode.name %></td>
-        <td><%= episode.aired %></td>
-        <td><%= episode.duration.to_s(:time) %></td>
-      </tr>
-      <% end %>
-    </tbody>
-  </table>
+  </div>
 </div>
 
 <%= link_to 'Edit', edit_serie_path(@serie) %> |

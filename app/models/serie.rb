@@ -50,7 +50,8 @@ class Serie < ApplicationRecord
     serie_sequel = Serie.find_by_id(self.sequel_id_was)
     serie_sequel.prequel = nil
     serie_sequel.save(validate: false)
-
+  end
+  
   def Serie.filter_index(letter, type, state)
     query = ""
     query = "name like '#{letter}%'" unless letter == "0"
