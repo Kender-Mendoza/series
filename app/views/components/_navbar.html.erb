@@ -1,4 +1,7 @@
-<% is_index ||= false %>
+<% 
+  is_index ||= false 
+  notice ||= nil
+%>
 
 <p id="notice"><%= notice %></p>
 
@@ -56,7 +59,7 @@
           <div class="select is-link">
             <%= select "", 
                        "with-types", 
-                       ApplicationPresenter.get_all_serie_types_for_filter %>
+                       ApplicationPresenter.get_all_serie_types("With Types") %>
           </div>
         </div>
 
@@ -64,7 +67,7 @@
           <div class="select is-link">
             <%= select "", 
                        "with-states", 
-                       ApplicationPresenter.get_all_serie_states_for_filter %>
+                       ApplicationPresenter.get_all_serie_states("With States") %>
           </div>
         </div>
       </div>

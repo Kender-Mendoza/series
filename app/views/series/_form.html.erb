@@ -1,61 +1,143 @@
-<%= form_with(model: serie) do |form| %>
-  <% if serie.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(serie.errors.count, "error") %> prohibited this serie from being saved:</h2>
+<div class="container">
+  <%= form_with(model: serie) do |form| %>
+    <% if serie.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(serie.errors.count, "error") %> prohibited this serie from being saved:</h2>
+  
+        <ul>
+          <% serie.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
 
-      <ul>
-        <% serie.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+    <div class="field">
+      <div class="control">
+        <%= form.label :name %>
+        <%= form.text_field :name, class: "input is-focused" %>
+      </div>
     </div>
+  
+    <div class="field">
+      <div class="control">
+        <%= form.label :cover_page %>
+        <%= form.text_field :cover_page, class: "input" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <%= form.label :synopsis %>
+        <%= form.text_area :synopsis, class: "textarea"%>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <%= form.label :quantity_episodes %>
+        <%= form.number_field :quantity_episodes, class: "input" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <%= form.label :aired %>
+        <%= form.date_field :aired, class: "input" %>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <div class="select">
+          <%= form.select :serie_type_id, ApplicationPresenter.get_all_serie_types("Select Serie Type") %>
+        </div>
+        
+        <div class="select">
+          <%= form.select :state_id, ApplicationPresenter.get_all_serie_states("Select Serie State") %>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <div class="select">
+          <%= form.select :prequel_id, ApplicationPresenter.get_all_series_whithout_one(@serie, "Prequel") %>
+        </div>
+      </div>
+    </div>
+
+    <div class="field">
+      <div class="control">
+        <div class="select">
+          <%= form.select :sequel_id, ApplicationPresenter.get_all_series_whithout_one(@serie, "Sequel")%>
+        </div>
+      </div>
+    </div>
+
+    <div>
+      <h2>Episodes</h2>
+      <table class="table is-fullwidth">
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>Aired</th>
+            <th>Name</th>
+            <th>Duration</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= form.fields_for :episodes do |detail_form| %>
+            <tr>
+              <td>
+                <div class="field">
+                  <div class="control">
+                    <%= detail_form.number_field :number, class: "input" %>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="field">
+                  <div class="control">
+                    <%= detail_form.time_field :duration, class: "input" %>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="field">
+                  <div class="control">
+                    <%= detail_form.text_field :name, class: "input" %>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="field">
+                  <div class="control">
+                    <%= detail_form.date_field :aired, class: "input" %>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="delete_container">
+                  <%= detail_form.check_box :_destroy, class: "delete_container__btn" %>
+                  <span class="delete"></span>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= render "components/add_has_many_btn", id: "add_has_many_serie" %>
+    </div>
+  
+  <div class="buttons mt-5">
+    <%= form.submit "Update", class: "button is-success" %>
+    <%= link_to 'Cancel', @serie, class: "button is-danger" %>
+  </div>
+  
   <% end %>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :cover_page %>
-    <%= form.text_field :cover_page %>
-  </div>
-
-  <div class="field">
-    <%= form.label :prequel_id %>
-    <%= form.number_field :prequel_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :sequel_id %>
-    <%= form.number_field :sequel_id %>
-  </div>
-
-<div>
-  <h2>Episodes</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Number</th>
-        <th>Name</th>
-        <th>Aired</th>
-        <th>Duration</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%= form.fields_for :episodes do |detail_form| %>
-        <tr>
-          <td><%= detail_form.number_field :number %></td>
-          <td><%= detail_form.time_field :duration %></td>
-          <td><%= detail_form.text_field :name %></td>
-          <td><%= detail_form.date_field :aired %></td>
-          <td><%= detail_form.check_box :_destroy %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
 </div>
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+
+<%= javascript_pack_tag 'has_many.js' %>
+
