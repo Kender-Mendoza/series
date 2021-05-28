@@ -1,44 +1,51 @@
 class Serie < ApplicationRecord
-    belongs_to :prequel, class_name: "Serie", optional: true, dependent: :destroy
-    belongs_to :sequel, class_name: "Serie", optional: true
-    belongs_to :serie_type
-    belongs_to :state
+  belongs_to :prequel, class_name: "Serie", optional: true, dependent: :destroy
+  belongs_to :sequel, class_name: "Serie", optional: true
+  belongs_to :serie_type
+  belongs_to :state
 
-    has_many :episodes, dependent: :destroy
-    accepts_nested_attributes_for :episodes, allow_destroy: true
+  has_many :episodes, dependent: :destroy
+  accepts_nested_attributes_for :episodes, allow_destroy: true
 
-    validates :prequel, uniqueness: true, allow_nil: true
-    validates :sequel, uniqueness: true, allow_nil: true
-    after_validation :errors_message_related
-    after_validation :update_related, if: -> {errors.empty?}
+  validates :prequel, uniqueness: true, allow_nil: true
+  validates :sequel, uniqueness: true, allow_nil: true
+  after_validation :link_prequel, if: -> { self.prequel_id.present? && self.prequel_id_changed? }
+  after_validation :link_sequel, if: -> { self.sequel_id.present? && self.sequel_id_changed? }
+  after_validation :unlink_prequel, if: -> { self.prequel_id.nil? && self.prequel_id_changed? }
+  after_validation :unlink_sequel, if: -> { self.sequel_id.nil? && self.sequel_id_changed? }
 
-    
-        
-    def errors_message_related
-        return true if prequel_id.nil? && sequel_id.nil? # si secuela y precuela son iguales
+  before_destroy :unlink_prequel, if: -> { self.prequel.present? }
+  before_destroy :unlink_sequel, if: -> { self.sequel.present? }
 
-        errors.add :prequel, message: "y sequela no pueden ser iguales." if prequel_id == sequel_id
-        
-        errors.add :prequel, message: "no puede ser la misma serie" if prequel == self
-        errors.add :prequel, message: "no existe" if !prequel_id.nil? && Serie.find_by(id: prequel_id).nil?
-        errors.add :prequel, message: "Ya tiene sequela" if self&.prequel&.sequel_id
-        
-        errors.add :sequel, message: "no puede ser la misma serie" if sequel == self
-        errors.add :sequel, message: "no existe" if !sequel_id.nil? && Serie.find_by(id: sequel_id).nil?
-        errors.add :sequel, message: "Ya tiene prequela" if self&.sequel&.prequel_id
-    end
+  def link_prequel
+    errors.add :prequel, message: "y sequela no pueden ser iguales." if self.prequel_id == self.sequel_id
+    errors.add :prequel, message: "no puede ser la misma serie" if self.prequel_id == self.id
+    errors.add :prequel, message: "ya tiene sequela" if self.prequel&.sequel_id&.present?
 
-    def update_related
-        unless prequel.nil?
-            serie_prequel = prequel
-            serie_prequel.sequel = self
-            serie_prequel.save(validate: false)
-        end 
-        
-        unless sequel.nil?
-            serie_sequel = sequel
-            serie_sequel.prequel = self
-            serie_sequel.save(validate: false)
-        end
-    end
+    serie_prequel = self.prequel
+    serie_prequel.sequel = self
+    serie_prequel.save(validate: false)
+  end
+
+  def link_sequel
+    errors.add :sequel, message: "y sequela no pueden ser iguales." if self.prequel_id == self.sequel_id
+    errors.add :sequel, message: "ya tiene prequela" if self.sequel&.prequel_id&.present?
+    errors.add :sequel, message: "no puede ser la misma serie" if self.sequel_id == self.id
+
+    serie_sequel = self.sequel
+    serie_sequel.prequel = self
+    serie_sequel.save(validate: false)
+  end
+
+  def unlink_prequel
+    serie_prequel = Serie.find_by_id(self.prequel_id_was)
+    serie_prequel.sequel = nil
+    serie_prequel.save(validate: false)
+  end
+
+  def unlink_sequel
+    serie_sequel = Serie.find_by_id(self.sequel_id_was)
+    serie_sequel.prequel = nil
+    serie_sequel.save(validate: false)
+  end
 end
