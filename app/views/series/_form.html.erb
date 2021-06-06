@@ -1,11 +1,20 @@
-<% page_name ||= "" %>
+<%
+  page_name ||= ""
+
+  image_name = "Choose Image"
+  image_url = ""
+
+  if @serie.cover_page_image.present?
+    image_name = @serie.cover_page_image_identifier
+    image_url = @serie.cover_page_image.url
+  end
+%>
 
 <div class="container">
   <%= form_with(model: serie) do |form| %>
     <% if serie.errors.any? %>
       <div id="error_explanation">
         <h2><%= pluralize(serie.errors.count, "error") %> prohibited this serie from being saved:</h2>
-  
         <ul>
           <% serie.errors.each do |error| %>
             <li><%= error.full_message %></li>
@@ -17,18 +26,42 @@
     <div class="container">
       <div class="columns">
         <div class="column">
+          <div class="columns">
+            <div class="column">
+              <%= image_tag image_url, height: "352", width: "250", class: "image_preview" %>
+            </div>
+
+            <div class="column is-flex is-align-items-flex-end">
+              <div class="file is-primary">
+                <label class="file-label">
+                  <%= form.file_field :cover_page_image, class: "file-input" %>
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-image"></i>
+                    </span>
+                    <span class="file-label">
+                      <%= image_name %>
+                    </span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+
           <div class="field">
             <div class="control">
               <%= form.label :cover_page %>
               <%= form.text_field :cover_page, class: "input" %>
             </div>
           </div>
+
           <div class="field">
             <div class="control">
               <%= form.label :name %>
               <%= form.text_field :name, class: "input is-focused" %>
             </div>
           </div>
+
           <div class="field">
             <div class="control">
               <%= form.label :synopsis %>
@@ -51,8 +84,8 @@
                   <div class="control">
                     <%= form.label :serie_type_id %>
                     <div class="select select--full_width">
-                      <%= form.select :serie_type_id, 
-                                      ApplicationPresenter.get_all_serie_types("Select Serie Type"), 
+                      <%= form.select :serie_type_id,
+                                      ApplicationPresenter.get_all_serie_types("Select Serie Type"),
                                       {}, {class: "select--full_width"} %>
                     </div>
                   </div>
@@ -69,7 +102,7 @@
                   <div class="control">
                     <%= form.label :state_id %>
                     <div class="select select--full_width">
-                      <%= form.select :state_id, 
+                      <%= form.select :state_id,
                                       ApplicationPresenter.get_all_serie_states("Select Serie State"),
                                       {}, {class: "select--full_width"} %>
                     </div>
@@ -85,7 +118,7 @@
                   <div class="control">
                     <%= form.label :prequel_id %>
                     <div class="select select--full_width">
-                      <%= form.select :prequel_id, 
+                      <%= form.select :prequel_id,
                                       ApplicationPresenter.get_all_series_whithout_one(@serie, "Prequel"),
                                       {}, {class: "select--full_width"} %>
                     </div>
@@ -95,7 +128,7 @@
                   <div class="control">
                     <%= form.label :sequel_id %>
                     <div class="select select--full_width">
-                      <%= form.select :sequel_id, 
+                      <%= form.select :sequel_id,
                                       ApplicationPresenter.get_all_series_whithout_one(@serie, "Sequel"),
                                       {}, {class: "select--full_width"} %>
                     </div>
@@ -107,6 +140,10 @@
         </div>
       </div>
     </div>
+
+    <%# TODO: hacer que esta tabla sea responsive
+      # * Se podria utilizar div simulando la tabla con la clase columns, para simular la tabla
+    %>
 
     <div>
       <h2>Episodes</h2>
@@ -162,10 +199,11 @@
         </tbody>
       </table>
       <%= render "components/add_has_many_btn", id: "add_has_many_serie" %>
-    </div> 
+    </div>
       <%= render "components/form_submit", page_name: page_name, form: form %>
   <% end %>
 </div>
 
 <%= javascript_pack_tag 'has_many.js' %>
+<%= javascript_pack_tag 'serie.js' %>
 

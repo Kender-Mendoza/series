@@ -7,6 +7,8 @@ class Serie < ApplicationRecord
   has_many :episodes, dependent: :destroy
   accepts_nested_attributes_for :episodes, allow_destroy: true
 
+  mount_uploader :cover_page_image, CoverPageImageUploader
+
   validates :prequel, uniqueness: true, allow_nil: true
   validates :sequel, uniqueness: true, allow_nil: true
   after_validation :link_prequel, if: -> { self.prequel_id.present? && self.prequel_id_changed? }
@@ -54,12 +56,12 @@ class Serie < ApplicationRecord
     query = "name like '#{letter}%'" unless letter == "0"
 
     unless type == "0"
-      query += " AND " unless query == "" 
+      query += " AND " unless query == ""
       query += "serie_type_id = '#{type}'"
     end
 
     unless state == "0"
-      query += " AND " unless query == "" 
+      query += " AND " unless query == ""
       query += "state_id = '#{state}'"
     end
 
