@@ -1,5 +1,6 @@
 class SeriesController < ApplicationController
   before_action :set_serie, only: [:show, :edit, :update, :destroy]
+  before_action :set_related, only: [:create, :update]
 
   # GET /series
   # GET /series.json
@@ -61,24 +62,28 @@ class SeriesController < ApplicationController
     end
   end
 
+  def filter_series
+    series = Serie.filter_index(params[:selectWithLetter],
+                                params[:selectWithType],
+                                params[:selectWithState])
+    render(json: series)
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_serie
       @serie = Serie.find(params[:id])
     end
 
+    def set_related
+      params[:serie][:prequel_id] = nil if params[:serie][:prequel_id] == "0"
+      params[:serie][:sequel_id] = nil if params[:serie][:sequel_id] == "0"
+    end
+
     # Only allow a list of trusted parameters through.
     def serie_params
       params.require(:serie)
-        .permit(:name, 
-                :cover_page, 
-                :prequel_id, 
-                :sequel_id, 
-                episodes_attributes: [:id, 
-                                      :number, 
-                                      :duration, 
-                                      :name, 
-                                      :aired,
-                                      :_destroy])
+        .permit(:selectWithLetter, :selectWithType, :selectWithType, :name, :cover_page, :prequel_id, :sequel_id,
+                :cover_page_image, episodes_attributes: [:id, :number, :duration, :name, :aired, :_destroy])
     end
 end

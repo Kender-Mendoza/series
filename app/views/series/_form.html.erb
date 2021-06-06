@@ -1,61 +1,209 @@
-<%= form_with(model: serie) do |form| %>
-  <% if serie.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(serie.errors.count, "error") %> prohibited this serie from being saved:</h2>
+<%
+  page_name ||= ""
 
-      <ul>
-        <% serie.errors.each do |error| %>
-          <li><%= error.full_message %></li>
-        <% end %>
-      </ul>
+  image_name = "Choose Image"
+  image_url = ""
+
+  if @serie.cover_page_image.present?
+    image_name = @serie.cover_page_image_identifier
+    image_url = @serie.cover_page_image.url
+  end
+%>
+
+<div class="container">
+  <%= form_with(model: serie) do |form| %>
+    <% if serie.errors.any? %>
+      <div id="error_explanation">
+        <h2><%= pluralize(serie.errors.count, "error") %> prohibited this serie from being saved:</h2>
+        <ul>
+          <% serie.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div class="container">
+      <div class="columns">
+        <div class="column">
+          <div class="columns">
+            <div class="column">
+              <%= image_tag image_url, height: "352", width: "250", class: "image_preview" %>
+            </div>
+
+            <div class="column is-flex is-align-items-flex-end">
+              <div class="file is-primary">
+                <label class="file-label">
+                  <%= form.file_field :cover_page_image, class: "file-input" %>
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-image"></i>
+                    </span>
+                    <span class="file-label">
+                      <%= image_name %>
+                    </span>
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <%= form.label :cover_page %>
+              <%= form.text_field :cover_page, class: "input" %>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <%= form.label :name %>
+              <%= form.text_field :name, class: "input is-focused" %>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="control">
+              <%= form.label :synopsis %>
+              <%= form.text_area :synopsis, class: "textarea"%>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="container">
+            <div class="columns">
+              <div class="column">
+                <div class="field">
+                  <div class="control">
+                    <%= form.label :quantity_episodes %>
+                    <%= form.number_field :quantity_episodes, class: "input" %>
+                  </div>
+                </div>
+
+                <div class="field">
+                  <div class="control">
+                    <%= form.label :serie_type_id %>
+                    <div class="select select--full_width">
+                      <%= form.select :serie_type_id,
+                                      ApplicationPresenter.get_all_serie_types("Select Serie Type"),
+                                      {}, {class: "select--full_width"} %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="column">
+                <div class="field">
+                  <div class="control">
+                    <%= form.label :aired %>
+                    <%= form.date_field :aired, class: "input" %>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="control">
+                    <%= form.label :state_id %>
+                    <div class="select select--full_width">
+                      <%= form.select :state_id,
+                                      ApplicationPresenter.get_all_serie_states("Select Serie State"),
+                                      {}, {class: "select--full_width"} %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="container">
+            <div class="columns">
+              <div class="column">
+                <div class="field">
+                  <div class="control">
+                    <%= form.label :prequel_id %>
+                    <div class="select select--full_width">
+                      <%= form.select :prequel_id,
+                                      ApplicationPresenter.get_all_series_whithout_one(@serie, "Prequel"),
+                                      {}, {class: "select--full_width"} %>
+                    </div>
+                  </div>
+                </div>
+                <div class="field">
+                  <div class="control">
+                    <%= form.label :sequel_id %>
+                    <div class="select select--full_width">
+                      <%= form.select :sequel_id,
+                                      ApplicationPresenter.get_all_series_whithout_one(@serie, "Sequel"),
+                                      {}, {class: "select--full_width"} %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
+
+    <%# TODO: hacer que esta tabla sea responsive
+      # * Se podria utilizar div simulando la tabla con la clase columns, para simular la tabla
+    %>
+
+    <div>
+      <h2>Episodes</h2>
+      <table class="table is-fullwidth">
+        <thead>
+          <tr>
+            <th>Number</th>
+            <th>Aired</th>
+            <th>Name</th>
+            <th>Duration</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= form.fields_for :episodes do |detail_form| %>
+            <tr>
+              <td>
+                <div class="field">
+                  <div class="control">
+                    <%= detail_form.number_field :number, class: "input" %>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="field">
+                  <div class="control">
+                    <%= detail_form.time_field :duration, class: "input" %>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="field">
+                  <div class="control">
+                    <%= detail_form.text_field :name, class: "input" %>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="field">
+                  <div class="control">
+                    <%= detail_form.date_field :aired, class: "input" %>
+                  </div>
+                </div>
+              </td>
+              <td>
+                <div class="delete_container">
+                  <%= detail_form.check_box :_destroy, class: "delete_container__btn" %>
+                  <span class="delete"></span>
+                </div>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+      <%= render "components/add_has_many_btn", id: "add_has_many_serie" %>
+    </div>
+      <%= render "components/form_submit", page_name: page_name, form: form %>
   <% end %>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :cover_page %>
-    <%= form.text_field :cover_page %>
-  </div>
-
-  <div class="field">
-    <%= form.label :prequel_id %>
-    <%= form.number_field :prequel_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :sequel_id %>
-    <%= form.number_field :sequel_id %>
-  </div>
-
-<div>
-  <h2>Episodes</h2>
-  <table>
-    <thead>
-      <tr>
-        <th>Number</th>
-        <th>Name</th>
-        <th>Aired</th>
-        <th>Duration</th>
-      </tr>
-    </thead>
-    <tbody>
-      <%= form.fields_for :episodes do |detail_form| %>
-        <tr>
-          <td><%= detail_form.number_field :number %></td>
-          <td><%= detail_form.time_field :duration %></td>
-          <td><%= detail_form.text_field :name %></td>
-          <td><%= detail_form.date_field :aired %></td>
-          <td><%= detail_form.check_box :_destroy %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
 </div>
-  <div class="actions">
-    <%= form.submit %>
-  </div>
-<% end %>
+
+<%= javascript_pack_tag 'has_many.js' %>
+<%= javascript_pack_tag 'serie.js' %>
+

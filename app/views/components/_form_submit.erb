@@ -1,0 +1,14 @@
+<% page_name ||= "" %>
+
+<div class="columns mt-5">
+  <div class="column is-three-fifths is-offset-one-fifth">
+    <div class="columns">
+      <div class="column">
+        <%= form.submit page_name, class: "button is-success is-medium is-fullwidth" %>
+      </div>
+      <div class="column">
+        <%= link_to 'Cancel', @serie, class: "button is-danger is-medium is-fullwidt is-flex" %>
+      </div>
+    </div>
+  </div>
+</div>

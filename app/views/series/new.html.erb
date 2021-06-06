@@ -1,5 +1,5 @@
-<h1>New Serie</h1>
+<%= render 'components/navbar'%>
 
-<%= render 'form', serie: @serie %>
+<h1 class="container title is-3 has-text-centered">New Serie</h1>
 
-<%= link_to 'Back', series_path %>
+<%= render 'form', serie: @serie, page_name: "Add Serie" %>
