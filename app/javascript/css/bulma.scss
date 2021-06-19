@@ -1,18 +1,1 @@
 @import '~bulma/bulma.sass';
-
-$tag-width: 54px;
-// Personal styles
-
-.tag--edit,
-.tag--delete {
-  position: absolute;
-  bottom: 5px;
-} 
-
-.tag--edit {
-  right: 10px + $tag-width;
-}
-
-.tag--delete {
-  right: 5px;
-}

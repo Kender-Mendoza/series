@@ -1,4 +1,4 @@
-<%= render 'components/navbar', notice: notice %>
+<%= render "components/navbar", notice: notice %>
 
 <div class="container">
   <div class="container is-fluid m-0 p-1 columns">
@@ -6,12 +6,6 @@
       <div class="card">
         <div class="card-image">
           <%= image_tag( @serie.cover_page, class: "image", width: "100%") %>
-        </div>
-        <div class="tag is-warning tag--edit">
-          <%= link_to 'Edit', edit_serie_path(@serie), class: "has-text-dark" %>
-        </div>
-        <div class="tag is-danger tag--delete">
-          <%= link_to 'Delete', @serie, method: :delete, data: { confirm: 'Are you sure?' }, class: "has-text-dark" %>
         </div>
       </div>
     </div>
@@ -23,7 +17,7 @@
           <p class="has-text-justified"> <%= @serie.synopsis %> </p>
         </div>
       </div>
-      
+
       <div class="block">
         <% if @serie.prequel.present? %>
           <p><b>Prequel:</b> <%= link_to @serie.prequel.name, @serie.prequel %></p>
@@ -79,6 +73,3 @@
     </div>
   </div>
 </div>
-
-<%= link_to 'Edit', edit_serie_path(@serie) %> |
-<%= link_to 'Back', series_path %>
