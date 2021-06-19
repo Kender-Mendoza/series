@@ -1,3 +1,4 @@
+"use strict"
 
 class Serie {
   constructor() {}
@@ -14,7 +15,20 @@ class Serie {
       fileLabel.textContent = file.name;
     });
   }
+
+  closeNotification() {
+    document.addEventListener("DOMContentLoaded", () => {
+      let element = document.querySelectorAll(".notification .delete") || [];
+      element.forEach(($delete) => {
+        const $notification = $delete.parentNode;
+        $delete.addEventListener("click", () => {
+          $notification.parentNode.removeChild($notification);
+        });
+      });
+    });
+  }
 }
 
-seriePage = new Serie();
-seriePage.previsualizeImage();
+let serie = new Serie();
+serie.previsualizeImage();
+serie.closeNotification();
