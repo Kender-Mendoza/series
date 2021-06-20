@@ -1,9 +1,11 @@
-<% 
-  is_index ||= false 
-  notice ||= nil
-%>
+<% is_index ||= false %>
 
-<p id="notice"><%= notice %></p>
+<% if notice.present? %>
+  <div class="notification is-link is-light">
+    <button class="delete"></button>
+    <span id="notice"><%= notice %></span>
+  </div>
+<% end %>
 
 <nav class="navbar is-light mb-3" role="navigation" aria-label="main navigation">
   <div class="navbar-brand">
@@ -14,61 +16,27 @@
     <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
       <span aria-hidden="true"></span>
       <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
     </a>
+      <span aria-hidden="true"></span>
   </div>
 
   <div id="navbarBasicExample" class="navbar-menu">
-    <% if is_index %>  
+    <% if is_index %>
       <div class="navbar-start">
         <div class="navbar-item">
-          <div class="select is-link">
-            <select id="with-letters">
-              <option value="0">With letters</option>
-              <option value="A">A</option>
-              <option value="B">B</option>
-              <option value="C">C</option>
-              <option value="D">D</option>
-              <option value="E">E</option>
-              <option value="F">F</option>
-              <option value="G">G</option>
-              <option value="H">H</option>
-              <option value="I">I</option>
-              <option value="J">J</option>
-              <option value="K">K</option>
-              <option value="M">M</option>
-              <option value="N">N</option>
-              <option value="L">L</option>
-              <option value="O">O</option>
-              <option value="P">P</option>
-              <option value="Q">Q</option>
-              <option value="R">R</option>
-              <option value="S">S</option>
-              <option value="T">T</option>
-              <option value="U">U</option>
-              <option value="V">V</option>
-              <option value="W">W</option>
-              <option value="X">X</option>
-              <option value="Y">Y</option>
-              <option value="Z">Z</option>
-            </select>
-          </div>
-        </div>
+          <%= search_form_for @q do |f| %>
+            <div class="select is-link">
+              <%= f.select :name_start, ApplicationPresenter.get_letter %>
+            </div>
 
-        <div class="navbar-item">
-          <div class="select is-link">
-            <%= select "", 
-                       "with-types", 
-                       ApplicationPresenter.get_all_serie_types("With Types") %>
-          </div>
-        </div>
+            <div class="select is-link">
+              <%= f.select :state_id_eq, ApplicationPresenter.get_all_serie_states("All States") %>
+            </div>
 
-        <div class="navbar-item">
-          <div class="select is-link">
-            <%= select "", 
-                       "with-states", 
-                       ApplicationPresenter.get_all_serie_states("With States") %>
-          </div>
+            <div class="select is-link">
+              <%= f.select :serie_type_id_eq, ApplicationPresenter.get_all_serie_types("All Types") %>
+            </div>
+          <% end %>
         </div>
       </div>
     <% end %>

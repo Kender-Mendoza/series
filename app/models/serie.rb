@@ -51,20 +51,4 @@ class Serie < ApplicationRecord
     serie_sequel.save(validate: false)
   end
 
-  def Serie.filter_index(letter, type, state)
-    query = ""
-    query = "name like '#{letter}%'" unless letter == "0"
-
-    unless type == "0"
-      query += " AND " unless query == ""
-      query += "serie_type_id = '#{type}'"
-    end
-
-    unless state == "0"
-      query += " AND " unless query == ""
-      query += "state_id = '#{state}'"
-    end
-
-    Serie.where(query)
-  end
 end

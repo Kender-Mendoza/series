@@ -10,19 +10,22 @@
   end
 %>
 
+<% if serie.errors.any? %>
+  <div class="notification is-danger is-light">
+    <button class="delete"></button>
+    <div id="error_explanation">
+      <h2 class="subtitle"><%= pluralize(serie.errors.count, "error") %> prohibited this serie from being saved:</h2>
+      <ul>
+        <% serie.errors.each do |error| %>
+          <li><%= error.full_message %></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+<% end %>
+
 <div class="container">
   <%= form_with(model: serie) do |form| %>
-    <% if serie.errors.any? %>
-      <div id="error_explanation">
-        <h2><%= pluralize(serie.errors.count, "error") %> prohibited this serie from being saved:</h2>
-        <ul>
-          <% serie.errors.each do |error| %>
-            <li><%= error.full_message %></li>
-          <% end %>
-        </ul>
-      </div>
-    <% end %>
-
     <div class="container">
       <div class="columns">
         <div class="column">
