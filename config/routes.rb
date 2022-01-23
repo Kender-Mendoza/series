@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  devise_for :users
   root to: "series#index"
   resources :series
   post "/filter_series", to: "series#filter_series"
