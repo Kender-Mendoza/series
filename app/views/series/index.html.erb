@@ -1,5 +1,6 @@
 <div class="container is-fluid">
-  <%= render 'components/navbar', is_index: true %>
+  <%# I need to repair this bug  %>
+  <%#= render 'components/navbar', is_index: true %>
 
   <div class="columns is-multiline" id="series_container">
     <% @series.each do |serie| %>
@@ -13,7 +14,7 @@
           </div>
           <footer class="card-footer">
             <span class="card-footer-item"><%= link_to 'Show', serie %></span>
-            <span class="card-footer-item"><%= link_to 'Edit', edit_serie_path(serie) %></span>
+            <span class="card-footer-item"><%= link_to 'Edit', edit_series_path(serie) %></span>
             <span class="card-footer-item"><%= link_to 'Destroy', serie, method: :delete, data: { confirm: 'Are you sure?' } %></span>
           </footer>
         </div>
@@ -24,5 +25,5 @@
 
 <br>
 
-<%= link_to 'New Serie', new_serie_path %>
+<%= link_to 'New Serie', new_series_path %>
 <%= javascript_pack_tag 'index.js' %>
